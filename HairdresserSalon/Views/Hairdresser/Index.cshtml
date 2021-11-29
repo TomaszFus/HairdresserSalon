@@ -1,0 +1,30 @@
+﻿@model IEnumerable<HairdresserModel>
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+<h1>Fryzjerzy</h1>
+<div>
+    <a asp-action="Create">Dodaj fryzjera</a>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

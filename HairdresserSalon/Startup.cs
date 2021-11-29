@@ -1,4 +1,6 @@
 using HairdresserSalon.Data;
+using HairdresserSalon.Repositories.Abstract;
+using HairdresserSalon.Repositories.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +29,11 @@ namespace HairdresserSalon
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<HairdresserDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DataConnection")));
+
+            services.AddTransient<IHairdresserRepository, HairdresserRepository>();
+            services.AddTransient<IServiceRepository, ServiceRepository>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

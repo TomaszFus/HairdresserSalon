@@ -1,0 +1,18 @@
+﻿@model HairdresserSalon.Models.HairdresserModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+<h1>Dodaj fryzjera</h1>
+<form asp-action="Create">
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    <div>
+        <input type="submit" value="Dodaj" />
+    </div>
+</form>
+
