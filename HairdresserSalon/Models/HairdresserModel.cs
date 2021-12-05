@@ -10,7 +10,7 @@ namespace HairdresserSalon.Models
     public class HairdresserModel
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [DisplayName("Imie")]
         public string Name { get; set; }
     }

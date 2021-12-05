@@ -10,6 +10,8 @@ namespace HairdresserSalon.Repositories.Abstract
     {
         void AddService(ServiceModel service);
         IEnumerable<ServiceModel> GetAllServices();
-        ServiceModel Get(int id);
+        ServiceModel Get(Guid id);
+        void Update(Guid id, ServiceModel serviceModel);
+        void Delete(Guid id);
     }
 }

@@ -35,7 +35,7 @@ namespace HairdresserSalon.Controllers
         public ActionResult Create(HairdresserModel hairdresser)
         {
             _hairdresserRepository.AddHairdresser(hairdresser);
-            return RedirectToAction(nameof(Index), nameof(HomeController));
+            return RedirectToAction("Index");
         }
     }
 }

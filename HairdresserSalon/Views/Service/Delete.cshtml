@@ -1,0 +1,32 @@
+﻿@model HairdresserSalon.Models.ServiceModel
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+<h1>Usuń</h1>
+
+<h3>Czy na pewno chcesz usunąć usługę?</h3>
+<div>
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="submit" value="Usuń" />
+        <a asp-action="Index">Anuluj</a>
+    </form>
+</div>
+
+

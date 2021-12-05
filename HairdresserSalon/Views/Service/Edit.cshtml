@@ -1,0 +1,29 @@
+﻿@model HairdresserSalon.Models.ServiceModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+<h1>Modyfikuj</h1>
+
+<div>
+    <div>
+        <form asp-action="Edit">
+            <div>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" />
+            </div>
+            <div>
+                <label asp-for="Price"></label>
+                <input asp-for="Price" />
+            </div>
+            <div>
+                <input type="submit" value="Zapisz zmiany"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Anuluj</a>
+</div>
