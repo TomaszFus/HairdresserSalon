@@ -1,3 +1,4 @@
+using Convey;
 using HairdresserSalon.Data;
 using HairdresserSalon.Repositories.Abstract;
 using HairdresserSalon.Repositories.Concrete;
@@ -33,6 +34,12 @@ namespace HairdresserSalon
 
             services.AddTransient<IHairdresserRepository, HairdresserRepository>();
             services.AddTransient<IServiceRepository, ServiceRepository>();
+            services.AddTransient<IDayRepository, DayRepository>();
+            services.AddConvey()
+                .AddApplication();
+
+
+
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -65,6 +72,13 @@ namespace HairdresserSalon
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+
+
+
+            //
+            app.UseConvey();
+
 
             app.UseEndpoints(endpoints =>
             {

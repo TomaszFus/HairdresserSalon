@@ -8,8 +8,9 @@ namespace HairdresserSalon.Repositories.Abstract
 {
     public interface IHairdresserRepository
     {
-        void AddHairdresser(HairdresserModel hairdresser);
+        Task AddHairdresser(HairdresserModel hairdresser);
 
-        IEnumerable<HairdresserModel> GetAllHairdressers();
+        Task<IEnumerable<HairdresserModel>> GetAllHairdressers();
+        Task<HairdresserModel> GetHairdresser(Guid id);
     }
 }

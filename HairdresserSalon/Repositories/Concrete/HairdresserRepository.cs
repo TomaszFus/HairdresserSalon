@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HairdresserSalon.Models;
 using HairdresserSalon.Repositories.Abstract;
 using HairdresserSalon.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HairdresserSalon.Repositories.Concrete
 {
@@ -16,15 +17,20 @@ namespace HairdresserSalon.Repositories.Concrete
             _context = context;
         }
 
-        public void AddHairdresser(HairdresserModel hairdresser)
+        public async Task AddHairdresser(HairdresserModel hairdresser)
         {
-            _context.Hairdressers.Add(hairdresser);
-            _context.SaveChanges();
+            await _context.Hairdressers.AddAsync(hairdresser);
+            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<HairdresserModel> GetAllHairdressers()
+        public async Task<IEnumerable<HairdresserModel>> GetAllHairdressers()
         {
-            return _context.Hairdressers.ToList();
+            return await _context.Hairdressers.ToListAsync();
+        }
+
+        public async Task<HairdresserModel> GetHairdresser(Guid id)
+        {
+            return await _context.Hairdressers.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

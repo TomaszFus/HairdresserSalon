@@ -5,21 +5,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using HairdresserSalon.Repositories.Abstract;
 using HairdresserSalon.Models;
+using Convey.CQRS.Queries;
+using HairdresserSalon.Queries.Service;
 
 namespace HairdresserSalon.Controllers
 {
     public class ServiceController : Controller
     {
         private readonly IServiceRepository _serviceRepository;
-        public ServiceController(IServiceRepository serviceRepository)
+        private readonly IQueryDispatcher _queryDispatcher;
+        
+        public ServiceController(IServiceRepository serviceRepository, IQueryDispatcher queryDispatcher)
         {
             _serviceRepository = serviceRepository;
+            _queryDispatcher = queryDispatcher;
         }
 
         //GET get all services
         public ActionResult Index()
         {
-            var list = _serviceRepository.GetAllServices();
+            var list = _queryDispatcher.QueryAsync(new GetAllServices()).Result;
             return View(list);
         }
 
@@ -41,7 +46,7 @@ namespace HairdresserSalon.Controllers
         //GET edit
         public ActionResult Edit(Guid id)
         {
-            return View(_serviceRepository.Get(id));
+            return View(_serviceRepository.Get(id).Result);
         }
 
         //POST edit
@@ -57,14 +62,14 @@ namespace HairdresserSalon.Controllers
         //GET delete
         public ActionResult Delete(Guid id)
         {
-            return View(_serviceRepository.Get(id));
+            return View(_serviceRepository.Get(id).Result);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid id, ServiceModel serviceModel)
         {
-            var service = _serviceRepository.Get(id);
+            //var service = _serviceRepository.Get(id);
             _serviceRepository.Delete(id);
             return RedirectToAction("Index");
         }

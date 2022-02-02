@@ -1,0 +1,18 @@
+﻿@model HairdresserSalon.Models.DayModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+<h1>Dodaj dzień</h1>
+<form asp-action="Create">
+    <div>
+        <label asp-for="Date"></label>
+        @Html.TextBoxFor(Model => Model.Date, new { type = "date" })
+    </div>
+    <div>
+        <input type="submit" value="Dodaj" />
+    </div>
+</form>
+

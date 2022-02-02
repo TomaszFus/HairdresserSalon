@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HairdresserSalon.Models;
 
 namespace HairdresserSalon.Data
 {
@@ -12,5 +13,6 @@ namespace HairdresserSalon.Data
             : base(options)
         {
         }
+        public DbSet<HairdresserSalon.Models.DayModel> DayModel { get; set; }
     }
 }

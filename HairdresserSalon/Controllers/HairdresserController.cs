@@ -5,21 +5,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using HairdresserSalon.Models;
 using HairdresserSalon.Repositories.Abstract;
+using Convey.CQRS.Commands;
+using Convey.CQRS.Queries;
+using HairdresserSalon.Commands.Hairdresser;
+using HairdresserSalon.Queries.Hairdresser;
 
 namespace HairdresserSalon.Controllers
 {
     public class HairdresserController : Controller
     {
-        private readonly IHairdresserRepository _hairdresserRepository;
-        public HairdresserController(IHairdresserRepository hairdresserRepository)
+        private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
+        public HairdresserController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
-            _hairdresserRepository = hairdresserRepository;
+            _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
+
         }
 
         //GET get all hairdressers
         public ActionResult Index()
         {
-            var list = _hairdresserRepository.GetAllHairdressers();
+            var list = _queryDispatcher.QueryAsync(new GetAllHairdressers()).Result;
             return View(list);
         }
 
@@ -34,8 +41,10 @@ namespace HairdresserSalon.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(HairdresserModel hairdresser)
         {
-            _hairdresserRepository.AddHairdresser(hairdresser);
+            _commandDispatcher.SendAsync(new CreateHairdresser(hairdresser.Name));
             return RedirectToAction("Index");
+            //_hairdresserRepository.AddHairdresser(hairdresser);
+
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HairdresserSalon.Repositories.Abstract;
 using HairdresserSalon.Data;
 using HairdresserSalon.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HairdresserSalon.Repositories.Concrete
 {
@@ -16,23 +17,23 @@ namespace HairdresserSalon.Repositories.Concrete
             _context = context;
         }
 
-        public void AddService(ServiceModel service)
+        public async Task AddService(ServiceModel service)
         {
-            _context.Services.Add(service);
+            await _context.Services.AddAsync(service);
             _context.SaveChanges();
         }
 
-        public ServiceModel Get(Guid id)
+        public async Task<ServiceModel> Get(Guid id)
         {
-            return _context.Services.FirstOrDefault(x => x.Id == id);
+            return await _context.Services.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public IEnumerable<ServiceModel> GetAllServices()
+        public async Task<IEnumerable<ServiceModel>> GetAllServices()
         {
-            return _context.Services.ToList();
+            return await _context.Services.ToListAsync();
         }
 
-        public void Update(Guid id, ServiceModel serviceModel)
+        public async Task Update(Guid id, ServiceModel serviceModel)
         {
             var result = _context.Services.SingleOrDefault(x => x.Id == id);
             if (result != null)
@@ -44,7 +45,7 @@ namespace HairdresserSalon.Repositories.Concrete
             }
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             var result = _context.Services.SingleOrDefault(x => x.Id == id);
             if (result!=null)

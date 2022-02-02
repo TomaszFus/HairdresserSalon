@@ -16,5 +16,7 @@ namespace HairdresserSalon.Data
 
         public DbSet<HairdresserModel> Hairdressers { get; set; }
         public DbSet<ServiceModel> Services { get; set; }
+        public DbSet<DayModel> Days { get; set; }
+        public DbSet<HourModel> Hours { get; set; }
     }
 }

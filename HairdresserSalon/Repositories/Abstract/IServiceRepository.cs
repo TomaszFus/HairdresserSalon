@@ -8,10 +8,10 @@ namespace HairdresserSalon.Repositories.Abstract
 {
     public interface IServiceRepository
     {
-        void AddService(ServiceModel service);
-        IEnumerable<ServiceModel> GetAllServices();
-        ServiceModel Get(Guid id);
-        void Update(Guid id, ServiceModel serviceModel);
-        void Delete(Guid id);
+        Task AddService(ServiceModel service);
+        Task<IEnumerable<ServiceModel>> GetAllServices();
+        Task<ServiceModel> Get(Guid id);
+        Task Update(Guid id, ServiceModel serviceModel);
+        Task Delete(Guid id);
     }
 }
