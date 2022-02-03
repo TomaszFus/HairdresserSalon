@@ -35,6 +35,7 @@ namespace HairdresserSalon
             services.AddTransient<IHairdresserRepository, HairdresserRepository>();
             services.AddTransient<IServiceRepository, ServiceRepository>();
             services.AddTransient<IDayRepository, DayRepository>();
+            services.AddTransient<IHourRepository, HourRepository>();
             services.AddConvey()
                 .AddApplication();
 
@@ -46,9 +47,9 @@ namespace HairdresserSalon
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

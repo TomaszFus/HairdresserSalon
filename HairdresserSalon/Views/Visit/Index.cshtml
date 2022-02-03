@@ -1,0 +1,38 @@
+﻿@model IEnumerable<DayModel>
+@{
+    ViewData["Title"] = "GetAll";
+
+}
+
+<h1>Terminy</h1>
+<table>
+    <tr>
+        @foreach (var day in Model)
+        {
+
+        <th>
+            @Html.DisplayFor(modelItem => day.Date.DayOfWeek)
+            @Html.DisplayFor(modelItem => day.Date)
+            <div>
+                @Html.DisplayFor(modelItem => day.Hairdresser.Name)
+            </div>
+
+        </th>
+
+        <tr>
+
+            @foreach (var hour in day.Hours)
+            {
+            <td>
+                @*@Html.ActionLink(hour.Hour.ToString(),"Index", "TimeTable", new { id = hour.Id }, null)*@
+                <button class="btn" onclick="location.href='@Url.Action("Create","Visit", new {id = hour.Id})'">
+                    @Html.DisplayFor(modelItem => hour.Hour)
+                </button>
+            </td>
+
+            }
+
+        </tr>
+    }
+        </tr>
+    </table>

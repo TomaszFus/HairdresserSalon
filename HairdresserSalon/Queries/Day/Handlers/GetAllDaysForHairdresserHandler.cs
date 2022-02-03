@@ -19,6 +19,11 @@ namespace HairdresserSalon.Queries.Day.Handlers
         public async Task<IEnumerable<DayModel>> HandleAsync(GetAllDaysForHairdresser query)
         {
             var list = await _dayRepository.GetAllDaysForHairdresser(query.Id);
+            foreach (var item in list)
+            {
+                item.Hours = item.Hours.OrderBy(x => x.Hour).ToList();
+            }
+            
             return list.OrderBy(x => x.Date);
         }
     }

@@ -13,5 +13,24 @@ namespace HairdresserSalon.Models
         public DateTime Hour { get; set; }
         public bool Available { get; set; }
         public DayModel Day { get; set; }
+
+        public HourModel()
+        {
+
+        }
+
+        public HourModel(Guid id, DateTime hour, bool available, DayModel day)
+        {
+            Id = id;
+            Hour = hour;
+            Available = available;
+            Day = day;
+        }
+
+        public static HourModel Create(Guid id, DateTime hour, bool available, DayModel day)
+        {
+            HourModel hourModel = new HourModel(id, hour, available, day);
+            return hourModel;
+        }
     }
 }

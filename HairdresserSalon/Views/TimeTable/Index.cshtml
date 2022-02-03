@@ -10,39 +10,43 @@
 
 <a asp-action="Create">Dodaj dzień</a>
 
-
 <table border="1">
-
-
-    @*@foreach (var item in Model)
+    <tr>
+        @foreach (var day in Model)
         {
+
+            <th>
+                @Html.DisplayFor(modelItem => day.Date)
+            </th>
+
             <tr>
-                <th>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </th>
+                                    
+                    @foreach (var hour in day.Hours)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => hour.Hour)
+                        </td>
+                        
+                    }                    
+                
             </tr>
-
-            @foreach (var hours in item.Hours)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => hours.Hour)
-                </td>
-            </tr>
-
-            }
-        }*@
+        }
+    </tr>
+</table>
 
 
+
+
+<!--<table border="1">
     <thead>
         <tr>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Date)*@
-                Data
+            <th>-->
+            @*@Html.DisplayNameFor(model => model.Date)*@
+            <!--Data
             </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Hours)*@
-                Godziny
+            <th>-->
+            @*@Html.DisplayNameFor(model => model.Hours)*@
+            <!--Godziny
             </th>
         </tr>
     </thead>
@@ -65,15 +69,26 @@
             </tr>
         }
     </tbody>
+</table>-->
+
+@*<div>
+    @foreach (var day in Model)
+    {
+
+        @Html.DisplayFor(modelItem => day.Date)
+
+        @foreach (var hour in day.Hours)
+        {
+            <div>
+                @Html.DisplayFor(modelItem => hour.Hour)
+            </div>
+        }
+
+    }
+</div>*@
 
 
-
-
-
-
-</table>
-
-@{ 
+@{
     var prevDisabled = !Model.PreviousPage ? "disabled" : "";
     var nextDisabled = !Model.NextPage ? "disabled" : "";
 }

@@ -33,6 +33,11 @@ namespace HairdresserSalon.Repositories.Concrete
             return await _context.Days.Include(x => x.Hairdresser).Include(x => x.Hours).Where(x => x.Hairdresser.Id == id).ToListAsync();
         }
 
+        public async Task<IEnumerable<DayModel>> GetAvailableDates()
+        {
+            return await _context.Days.Include(x => x.Hairdresser).Include(x => x.Hours).ToListAsync();
+        }
+
         public async Task<DayModel> GetDay(Guid id)
         {
             return await _context.Days.Where(x => x.Id == id).Include(x => x.Hairdresser).Include(x => x.Hours).FirstOrDefaultAsync();

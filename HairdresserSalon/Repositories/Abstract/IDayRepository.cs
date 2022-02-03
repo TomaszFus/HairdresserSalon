@@ -12,6 +12,8 @@ namespace HairdresserSalon.Repositories.Abstract
         Task<IEnumerable<DayModel>> GetAllDaysForHairdresser(Guid id);
         Task AddDay(DayModel day);
         Task<DayModel> GetDay(Guid id);
-        
+        Task<IEnumerable<DayModel>> GetAvailableDates();
+
+
     }
 }
