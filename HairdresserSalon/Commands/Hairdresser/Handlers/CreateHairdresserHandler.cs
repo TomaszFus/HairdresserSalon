@@ -18,7 +18,7 @@ namespace HairdresserSalon.Commands.Hairdresser.Handlers
 
         public async Task HandleAsync(CreateHairdresser command)
         {
-            HairdresserModel hairdresser = HairdresserModel.Create(Guid.NewGuid(), command.Name);
+            HairdresserModel hairdresser = HairdresserModel.Create(Guid.NewGuid(), command.Name, false);
             await _hairdresserRepository.AddHairdresser(hairdresser);
         }
     }

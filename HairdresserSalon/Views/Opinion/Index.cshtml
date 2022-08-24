@@ -1,0 +1,71 @@
+﻿@model PaginatedList<VisitModel>
+@{
+    ViewData["Title"] = "Opinie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="PlaceHolder"></div>
+<h1>Opinie</h1>
+@*@{ 
+    float suma = 0;
+    foreach (var item in Model)
+    {
+        suma += item.Opinion.Rating;
+    }
+    float srednia = suma / Model.Count;
+}*@
+<h3>Średnia ocen: @TempData["srednia"]</h3>
+
+@foreach (var item in Model)
+{
+    <div class="row bg-light" style="margin: 15px">
+
+        <div class="col-md-8">
+            <div>
+                <h5 class="fw-bold">
+                    @Html.DisplayFor(modelItem => item.Customer.FirstName),
+                    @Html.DisplayFor(modelItem => item.Opinion.Date)
+                </h5>
+            </div>
+            <div>
+
+                <b>@Html.DisplayNameFor(modelItem => item.Service.Name): </b>
+                @Html.DisplayFor(modelItem => item.Service.Name)
+
+            </div>
+            <div>
+
+                <b>@Html.DisplayNameFor(modelItem => item.Hairdresser.Name): </b>
+                @Html.DisplayFor(modelItem => item.Hairdresser.Name)
+
+            </div>
+            <div>
+
+                <b>@Html.DisplayNameFor(modelItem => item.Opinion.Rating): </b>
+                @Html.DisplayFor(modelItem => item.Opinion.Rating)
+
+            </div>
+            @if (item.Opinion.Description != null)
+            {
+                <i>@Html.DisplayFor(modelItem => item.Opinion.Description)</i>
+            }
+        </div>
+    </div>
+}
+
+@{
+    var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.NextPage ? "disabled" : "";
+}
+
+<center>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-default bg-light @prevDisabled">
+        Poprzednia
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-default bg-light @nextDisabled">
+        Następna
+    </a>
+</center>

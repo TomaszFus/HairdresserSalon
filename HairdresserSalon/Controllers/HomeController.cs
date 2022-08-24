@@ -14,11 +14,13 @@ namespace HairdresserSalon.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IDayRepository _dayRepository;
+        private readonly IUserRepository _permissionRepository;
 
-        public HomeController(ILogger<HomeController> logger, IDayRepository dayRepository)
+        public HomeController(ILogger<HomeController> logger, IDayRepository dayRepository, IUserRepository permissionRepository)
         {
             _logger = logger;
             _dayRepository = dayRepository;
+            _permissionRepository = permissionRepository;
         }
 
         public IActionResult Index()

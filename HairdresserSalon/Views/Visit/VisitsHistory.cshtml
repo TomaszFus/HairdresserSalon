@@ -1,0 +1,67 @@
+﻿@model IEnumerable<VisitModel>
+
+<ul class="list-group list-group-horizontal">
+    <li class="list-group-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Visit" asp-action="CustomerIndex">Moje wizyty</a>
+    </li>
+    <li class="list-group-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Visit" asp-action="VisitsHistory">Historia wizyt</a>
+    </li>
+    <li class="list-group-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Zarządzanie kontem</a>
+    </li>
+</ul>
+
+@if (!Model.Any())
+{
+    <label>Brak wizyt</label>
+}
+<div class="col-md-6">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date.Day)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date.Hour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Hairdresser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.Day.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.Hour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hairdresser.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @if (item.Opinion == null)
+                        {
+                            @Html.ActionLink("Oceń wizytę", "AddOpinion", new { id = item.Id })
+                        }
+                    </td>
+
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

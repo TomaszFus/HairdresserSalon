@@ -1,0 +1,75 @@
+﻿@model HairdresserSalon.Models.InformationModel
+@{
+    ViewData["Title"] = "Edytuj usługę";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+<h1>Modyfikuj</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <form asp-action="Edit">
+            <div class="form-group">
+                <label class="form-label" asp-for="Street"></label>
+                <input class="form-control" asp-for="Street" />
+                <div>
+                    @Html.ValidationMessageFor(model => model.Street, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" asp-for="City"></label>
+                <input class="form-control" asp-for="City" />
+                <div>
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" asp-for="PhoneNumber"></label>
+                <input class="form-control" asp-for="PhoneNumber" />
+                <div>
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Zapisz zmiany" />
+                <a class="btn btn-primary" asp-action="Index">Anuluj</a>
+            </div>
+        </form>
+
+        
+
+    </div>
+
+    <div class="col-md-4">
+        <table class="table">
+            <tbody>
+                @foreach (var item in Model.OpeningHour)
+                {
+                    <tr>
+                        <td>
+                            <label>@Html.DisplayFor(modelItem => item.DayOfWeek)</label>
+                        </td> 
+                        <td>
+                            @if (item.IsOpen == true)
+                            {
+                                <label><b>@Html.DisplayFor(modelItem => item.Open)</b>-<b>@Html.DisplayFor(modelItem => item.Close)</b></label>
+                            }
+                            else
+                            {
+                                <label><b>Zamknięte</b></label>
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edytuj", "Edit","OpeningHour", new { id = item.Id })
+                        </td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+    </div>
+
+
+</div>
+

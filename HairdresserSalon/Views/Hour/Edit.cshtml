@@ -1,0 +1,66 @@
+﻿@model HairdresserSalon.Models.DayModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="row">
+        <div class="col-lg">
+            <div class="rounded pg-3 alert-success">
+                @TempData["Success"].ToString()
+            </div>
+        </div>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="row">
+        <div class="col-lg">
+            <div class="rounded pg-3 alert-danger">
+                @TempData["Error"].ToString()
+            </div>
+        </div>
+    </div>
+}
+
+<h1>@Html.DisplayFor(Model => Model.Date)</h1>
+<div class="row">
+    <div class="col-md-3">
+
+        <form asp-action="Create">
+            <div class="form-group">
+                <input class="form-control" type="time" id="hour" name="hour" min="09:00" max="20:00" required>
+
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Dodaj" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table">
+                    <tbody>
+                        @foreach (var hour in Model.Hours)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => hour.Hour)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Usuń", "Delete", new { id = hour.Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+

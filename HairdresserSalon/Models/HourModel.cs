@@ -10,8 +10,10 @@ namespace HairdresserSalon.Models
     {
         public Guid Id { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        [Display(Name ="Godzina")]
         public DateTime Hour { get; set; }
         public bool Available { get; set; }
+        [Display(Name = "Data")]
         public DayModel Day { get; set; }
 
         public HourModel()

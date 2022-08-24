@@ -1,106 +1,125 @@
 ﻿@model PaginatedList<DayModel>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Harmonogram";
     Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
 }
 
 <div id="PlaceHolder"></div>
+@if (TempData["Success"] != null)
+{
+    <div class="row">
+        <div class="col-lg">
+            <div class="rounded pg-3 alert-success">
+                @TempData["Success"].ToString()
+            </div>
+        </div>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="row">
+        <div class="col-lg">
+            <div class="rounded pg-3 alert-danger">
+                @TempData["Error"].ToString()
+            </div>
+        </div>
+    </div>
+}
+<h1 class="zajete">Harmonogram</h1>
 
-<h1>Harmonogram</h1>
 
-<a asp-action="Create">Dodaj dzień</a>
+<h3>Dodaj dzień</h3>
+<div class="row">
+    <div class="col-md-3">
+        <form asp-action="Create">
+            <div class="form-group">
+                @*<label asp-for="Date"></label>*@
+                @*@Html.TextBoxFor(Model => Model.Date, new { type = "date" })*@
+                <input class="form-control" type="date" id="datefield" name="datefield" required>
+            </div>  
+            <div>
+                <input class="btn btn-primary" type="submit" value="Dodaj" />
+            </div>
+        </form>
+    </div>
+</div>
 
-<table border="1">
-    <tr>
+
+
+<script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("datefield").setAttribute("min", today);
+</script>
+
+<div style="margin: 10px 0px 10px 0px">
+    <table class="table">
+
         @foreach (var day in Model)
         {
 
-            <th>
+            <th class="table-light table-bordered">
                 @Html.DisplayFor(modelItem => day.Date)
+                @Html.ActionLink("Modyfikuj", "Edit", "Hour", new { id = day.Id })
             </th>
 
-            <tr>
-                                    
-                    @foreach (var hour in day.Hours)
+            <tr class="table-bordered">
+
+                @foreach (var hour in day.Hours)
+                {
+                    @if (hour.Available == false)
+                    {
+                        <td style="background-color: #8c312a">
+                            @Html.DisplayFor(modelItem => hour.Hour)
+                        </td>
+
+                    }
+                    else
                     {
                         <td>
                             @Html.DisplayFor(modelItem => hour.Hour)
                         </td>
-                        
-                    }                    
-                
-            </tr>
-        }
-    </tr>
-</table>
-
-
-
-
-<!--<table border="1">
-    <thead>
-        <tr>
-            <th>-->
-            @*@Html.DisplayNameFor(model => model.Date)*@
-            <!--Data
-            </th>
-            <th>-->
-            @*@Html.DisplayNameFor(model => model.Hours)*@
-            <!--Godziny
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var day in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => day.Date)
-                </td>
-                <td>
-                    @foreach (var hour in day.Hours)
-                    {
-                        <div>
-                            @Html.DisplayFor(modelItem => hour.Hour)
-                        </div>
-
                     }
-                </td>
+                }
+
             </tr>
         }
-    </tbody>
-</table>-->
 
-@*<div>
-    @foreach (var day in Model)
-    {
+    </table>
+</div>
 
-        @Html.DisplayFor(modelItem => day.Date)
 
-        @foreach (var hour in day.Hours)
-        {
-            <div>
-                @Html.DisplayFor(modelItem => hour.Hour)
-            </div>
-        }
 
+
+
+    
+
+
+    @{
+        var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.NextPage ? "disabled" : "";
     }
-</div>*@
+<center>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-default bg-light @prevDisabled">
+        Poprzednia
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-default bg-light @nextDisabled">
+        Następna
+    </a>
+</center>
 
-
-@{
-    var prevDisabled = !Model.PreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.NextPage ? "disabled" : "";
-}
-
-<a asp-action="Index"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   class="btn btn-default @prevDisabled">
-    Poprzednia
-</a>
-<a asp-action="Index"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   class="btn btn-default @nextDisabled">
-    Następna
-</a>
-
+<a class="btn btn-primary" asp-controller="Hairdresser" asp-action="Index">Powrót</a>

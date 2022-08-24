@@ -1,0 +1,54 @@
+﻿@model InformationModel
+@{
+    ViewData["Title"] = "Informacje";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Kontakt</h1>
+<div class="row bg-light">
+    <div class="col-md-4">
+        <h3>Adres</h3>
+        <div>
+            <h4>@Html.DisplayFor(Model => Model.Street)</h4>
+        </div>
+        <div>
+            <h4>@Html.DisplayFor(Model => Model.City)</h4>
+        </div>
+        <h3>Telefon</h3>
+        <div>
+            <h4>@Html.DisplayFor(Model => Model.PhoneNumber)</h4>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+        <h3>Godziny otwarcia</h3>
+        <table class="table">
+            <tbody>
+                @foreach (var item in Model.OpeningHour)
+                {
+                    <tr>
+                        <td>
+                            <label>@Html.DisplayFor(modelItem => item.DayOfWeek) </label>
+                        </td>
+                        <td>
+                            @if (item.IsOpen == true)
+                            {
+                                <label><b>@Html.DisplayFor(modelItem => item.Open)</b>-<b>@Html.DisplayFor(modelItem => item.Close)</b></label>
+                            }
+                            else
+                            {
+                                <label><b>Zamknięte</b></label>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+

@@ -30,7 +30,7 @@ namespace HairdresserSalon.Repositories.Concrete
 
         public async Task<IEnumerable<ServiceModel>> GetAllServices()
         {
-            return await _context.Services.ToListAsync();
+            return await _context.Services.Where(x=>x.IsDeleted==false).ToListAsync();
         }
 
         public async Task Update(Guid id, ServiceModel serviceModel)
@@ -40,8 +40,9 @@ namespace HairdresserSalon.Repositories.Concrete
             {
                 result.Name = serviceModel.Name;
                 result.Price = serviceModel.Price;
+                result.Duration = serviceModel.Duration;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -50,7 +51,7 @@ namespace HairdresserSalon.Repositories.Concrete
             var result = _context.Services.SingleOrDefault(x => x.Id == id);
             if (result!=null)
             {
-                _context.Services.Remove(result);
+                result.IsDeleted = true;
                 _context.SaveChanges();
             }
         }

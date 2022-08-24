@@ -19,6 +19,32 @@ namespace HairdresserSalon.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("HairdresserSalon.Models.CustomerModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VisitsCounter")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("HairdresserSalon.Models.DayModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -44,7 +70,11 @@ namespace HairdresserSalon.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -74,6 +104,81 @@ namespace HairdresserSalon.Migrations
                     b.ToTable("Hours");
                 });
 
+            modelBuilder.Entity("HairdresserSalon.Models.InformationModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Informations");
+                });
+
+            modelBuilder.Entity("HairdresserSalon.Models.OpeningHourModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Close")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DayOfWeek")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("InformationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Open")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InformationId");
+
+                    b.ToTable("OpeningHours");
+                });
+
+            modelBuilder.Entity("HairdresserSalon.Models.OpinionModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("HairdresserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HairdresserId");
+
+                    b.ToTable("Opinions");
+                });
+
             modelBuilder.Entity("HairdresserSalon.Models.ServiceModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -83,7 +188,11 @@ namespace HairdresserSalon.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
@@ -92,6 +201,51 @@ namespace HairdresserSalon.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("HairdresserSalon.Models.VisitModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Canceled")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Ended")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("HairdresserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OpinionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<Guid?>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("DateId");
+
+                    b.HasIndex("HairdresserId");
+
+                    b.HasIndex("OpinionId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("Visits");
                 });
 
             modelBuilder.Entity("HairdresserSalon.Models.DayModel", b =>
@@ -112,9 +266,65 @@ namespace HairdresserSalon.Migrations
                     b.Navigation("Day");
                 });
 
+            modelBuilder.Entity("HairdresserSalon.Models.OpeningHourModel", b =>
+                {
+                    b.HasOne("HairdresserSalon.Models.InformationModel", "Information")
+                        .WithMany("OpeningHour")
+                        .HasForeignKey("InformationId");
+
+                    b.Navigation("Information");
+                });
+
+            modelBuilder.Entity("HairdresserSalon.Models.OpinionModel", b =>
+                {
+                    b.HasOne("HairdresserSalon.Models.HairdresserModel", "Hairdresser")
+                        .WithMany()
+                        .HasForeignKey("HairdresserId");
+
+                    b.Navigation("Hairdresser");
+                });
+
+            modelBuilder.Entity("HairdresserSalon.Models.VisitModel", b =>
+                {
+                    b.HasOne("HairdresserSalon.Models.CustomerModel", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("HairdresserSalon.Models.HourModel", "Date")
+                        .WithMany()
+                        .HasForeignKey("DateId");
+
+                    b.HasOne("HairdresserSalon.Models.HairdresserModel", "Hairdresser")
+                        .WithMany()
+                        .HasForeignKey("HairdresserId");
+
+                    b.HasOne("HairdresserSalon.Models.OpinionModel", "Opinion")
+                        .WithMany()
+                        .HasForeignKey("OpinionId");
+
+                    b.HasOne("HairdresserSalon.Models.ServiceModel", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Date");
+
+                    b.Navigation("Hairdresser");
+
+                    b.Navigation("Opinion");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("HairdresserSalon.Models.DayModel", b =>
                 {
                     b.Navigation("Hours");
+                });
+
+            modelBuilder.Entity("HairdresserSalon.Models.InformationModel", b =>
+                {
+                    b.Navigation("OpeningHour");
                 });
 #pragma warning restore 612, 618
         }

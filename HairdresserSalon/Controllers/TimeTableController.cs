@@ -22,12 +22,13 @@ namespace HairdresserSalon.Controllers
             _commandDispatcher = commandDispatcher;
         }
 
-        public ActionResult Index(Guid id, int pageNumber=1)
+        public ActionResult Index(Guid id, int pageNumber=2)
         {
             TempData["id"] = id;
             var list = _queryDispatcher.QueryAsync(new GetAllDaysForHairdresser { Id = id }).Result;
+            list = list.Where(x => x.Date >= DateTime.Today.AddDays(-7)).ToList();
             //return View(list);
-            return View(PaginatedList<DayModel>.CreateAsync(list, pageNumber, 5));
+            return View(PaginatedList<DayModel>.CreateAsync(list, pageNumber, 6));
         }
 
         public ActionResult Create()
@@ -37,14 +38,41 @@ namespace HairdresserSalon.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(DayModel day)
+        public ActionResult Create(DateTime datefield)
         {
             Guid id;
             var a = Guid.TryParse(TempData["id"].ToString(), out id);
-            _commandDispatcher.SendAsync(new CreateDay(day.Date, id));
-            return RedirectToAction("Index","Hairdresser");
+
+            bool correct = true;
+            var list = _queryDispatcher.QueryAsync(new GetAllDaysForHairdresser { Id = id }).Result;
+            foreach (var item in list)
+            {
+                if (item.Date ==datefield)
+                {
+                    correct = false;
+                    TempData["Error"] = "Ten dzień został już dodany.";
+                    break;
+                    
+                }
+            }
+            if (datefield.DayOfWeek==DayOfWeek.Sunday)
+            {
+                correct = false;
+                TempData["Error"] = "Nie dodano dnia, ponieważ wybrany dzień to niedziela.";
+            }
+
+            if (correct == true)
+            {
+                _commandDispatcher.SendAsync(new CreateDay(datefield, id));
+                TempData["Success"] = "Dodano dzień.";
+            }
+            
+            return RedirectToAction("Index", new { id = TempData["id"] });
             
 
+
         }
+
+        
     }
 }

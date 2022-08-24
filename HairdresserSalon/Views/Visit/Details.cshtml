@@ -1,0 +1,53 @@
+﻿@model VisitModel
+@{
+    ViewData["Title"] = "Szczegóły wizyty";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+    TempData["source"] = 2;
+}
+<h1>
+    Szczegóły wizyty
+</h1>
+<div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Date.Day.Date)</b></label>
+        @Html.DisplayFor(model => model.Date.Day.Date)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Date.Hour)</b></label>
+        @Html.DisplayFor(model => model.Date.Hour)
+    </div>
+    <div>
+        <label><b>Klient</b></label>
+        @Html.DisplayFor(model => model.Customer.FirstName)
+        @Html.DisplayFor(model => model.Customer.LastName)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Customer.PhoneNumber)</b></label>
+        @Html.DisplayFor(model => model.Customer.PhoneNumber)        
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Hairdresser.Name)</b></label>
+        @Html.DisplayFor(model => model.Hairdresser.Name)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Service.Name)</b></label>
+        @Html.DisplayFor(model => model.Service.Name)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Price)</b></label>
+        @if (Model.Customer.VisitsCounter % 10 == 0)
+        {
+            <label>
+                <b>Zniżka została naliczona</b>
+            </label>
+        }
+        @Html.DisplayFor(model => model.Price) zł
+
+    </div>
+
+    <div>
+        <input class="btn btn-primary" type="button" value="Zakończ" onclick="location.href='@Url.Action("EndVisit", "Visit", new { id = Model.Id })'" />
+        <input class="btn btn-danger" type="button" value="Odwołaj" onclick="location.href='@Url.Action("CancelVisit", "Visit", new { id = Model.Id })'" />
+    </div>
+
+</div>

@@ -1,4 +1,7 @@
-﻿using HairdresserSalon.Repositories.Abstract;
+﻿using Convey.CQRS.Queries;
+using HairdresserSalon.Models;
+using HairdresserSalon.Queries.Day;
+using HairdresserSalon.Repositories.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,16 +12,23 @@ namespace HairdresserSalon.Controllers
 {
     public class DayController : Controller
     {
-        private readonly IDayRepository _dayRepository;
-        public DayController(IDayRepository dayRepository)
+        private readonly IQueryDispatcher _queryDispatcher;
+        public DayController(IQueryDispatcher queryDispatcher)
         {
-            _dayRepository = dayRepository;
+            _queryDispatcher = queryDispatcher;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber = 1)
         {
-            var list = _dayRepository.GetAllDays();
-            return View(list);
+            var list = _queryDispatcher.QueryAsync(new GetAllAvailableDates()).Result;
+            return View(PaginatedList<DayModel>.CreateAsync(list, pageNumber, 6));
+        }
+
+        public IActionResult IndexEmp(int pageNumber = 1)
+        {
+            TempData["emp"] = true;
+            var list = _queryDispatcher.QueryAsync(new GetAllAvailableDates()).Result;
+            return View("Index",PaginatedList<DayModel>.CreateAsync(list, pageNumber, 6));
         }
 
         public IActionResult Details()

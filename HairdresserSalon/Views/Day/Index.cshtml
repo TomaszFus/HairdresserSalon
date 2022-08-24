@@ -1,66 +1,66 @@
-﻿@model IEnumerable<DayModel>
+﻿@model PaginatedList<DayModel>
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+    ViewData["Title"] = "Dostępne terminy";
+
 }
-
-<h1>Index</h1>
-<table border="1">
-
-
-    @*@foreach (var item in Model)
-    {
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => item.Date)
-            </th>
-        </tr>
-
-        @foreach (var hours in item.Hours)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => hours.Hour)
-            </td>
-        </tr>
-            
-        }
-    }*@
-
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hours)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+@if (TempData["Error"] != null)
+{
+    <div class="row">
+        <div class="col-lg">
+            <div class="rounded pg-3 alert-danger">
+                @TempData["Error"].ToString()
+            </div>
+        </div>
+    </div>
+}
+<div id="PlaceHolder"></div>
+<h1>Dostępne terminy</h1>
+<table class="table table-striped">
+    <tr>
         @foreach (var day in Model)
         {
-            <tr>
-                <td>
+
+            <th>
+                <div>
+                    @Html.DisplayFor(modelItem => day.Date.DayOfWeek)
                     @Html.DisplayFor(modelItem => day.Date)
-                </td>
+                    @Html.DisplayFor(modelItem => day.Hairdresser.Name)
+                </div>
+
+            </th>
+
+        <tr>
+
+            @foreach (var hour in day.Hours)
+            {
                 <td>
-                    @foreach (var hour in day.Hours)
-                    {
-                    <div>
+                    @*@Html.ActionLink(hour.Hour.ToString(),"Index", "TimeTable", new { id = hour.Id }, null)*@
+                    <button class="btn" onclick="location.href='@Url.Action("Create","Visit", new {id = hour.Id})'">
                         @Html.DisplayFor(modelItem => hour.Hour)
-                    </div>
-                        
-                    }
+                    </button>
                 </td>
-            </tr>
-        }
-    </tbody>
 
+            }
 
+        </tr>
+    }
+        </tr>
+    </table>
 
-
-
-
-</table>
-
+    @{
+        var prevDisabled = !Model.PreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.NextPage ? "disabled" : "";
+    }
+<center>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-default bg-light @prevDisabled">
+        Poprzednia
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-default bg-light @nextDisabled">
+        Następna
+    </a>
+</center>
+    

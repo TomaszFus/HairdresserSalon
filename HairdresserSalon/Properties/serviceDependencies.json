@@ -2,11 +2,17 @@
   "dependencies": {
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:DefaultConnection"
+      "connectionId": "DataConnection"
     },
     "mssql2": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:AuthDbContextConnection"
+      "connectionId": "AuthDbContextConnection"
+    },
+    "mssql4": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DataConnection",
+      "suggestion": "true",
+      "ignored": "true"
     }
   }
 }

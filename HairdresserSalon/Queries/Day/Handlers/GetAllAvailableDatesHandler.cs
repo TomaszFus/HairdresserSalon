@@ -6,7 +6,7 @@ using Convey.CQRS.Queries;
 using HairdresserSalon.Models;
 using HairdresserSalon.Repositories.Abstract;
 
-namespace HairdresserSalon.Queries.Visit.Handlers
+namespace HairdresserSalon.Queries.Day.Handlers
 {
     public class GetAllAvailableDatesHandler : IQueryHandler<GetAllAvailableDates, IEnumerable<DayModel>>
     {
@@ -20,9 +20,13 @@ namespace HairdresserSalon.Queries.Visit.Handlers
             var list = await _dayRepository.GetAvailableDates();
             foreach (var item in list)
             {
+                if (item.Date == DateTime.Today)
+                {
+                    item.Hours = item.Hours.Where(x => x.Hour.Hour > DateTime.Now.Hour).ToList();
+                }
                 item.Hours = item.Hours.OrderBy(x => x.Hour).Where(x=>x.Available==true).ToList();
             }
-
+            list = list.Where(x => x.Hours.Count != 0).ToList();
             return list.OrderBy(x => x.Date);
         }
     }

@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/hairdressersalondb/databases/HairdresserSalon_db",
+      "type": "mssql.azure",
+      "connectionId": "DataConnection",
+      "secretStore": "AzureAppSettings"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/hairdressersalondb/databases/HairdresserSalon_db2",
+      "type": "mssql.azure",
+      "connectionId": "AuthDbContextConnection",
+      "secretStore": "AzureAppSettings"
+    },
+    "mssql5": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:AuthDbContextConnection",
+      "suggestion": "true",
+      "ignored": "true"
+    }
+  }
+}

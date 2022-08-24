@@ -1,12 +1,12 @@
 ﻿@model HairdresserSalon.Models.ServiceModel
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Usuń usługę";
     Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
 }
 
 <h1>Usuń</h1>
 
-<h3>Czy na pewno chcesz usunąć usługę?</h3>
+<h4>Czy na pewno chcesz usunąć usługę?</h4>
 <div>
     <dl>
         <dt>
@@ -20,12 +20,19 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Price)
+            zł
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
         </dd>
     </dl>
 
     <form asp-action="Delete">
-        <input type="submit" value="Usuń" />
-        <a asp-action="Index">Anuluj</a>
+        <input class="btn btn-danger" type="submit" value="Usuń" />
+        <a class="btn btn-primary" asp-action="Index">Anuluj</a>
     </form>
 </div>
 

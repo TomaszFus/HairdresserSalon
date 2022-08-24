@@ -1,0 +1,25 @@
+﻿@model HairdresserSalon.Models.HairdresserModel
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+
+<h1>Usuń fryzjera</h1>
+
+<h4>Czy na pewno chcesz usunąć fryzjera? Spowoduje to odwołanie wszystkich umówionych do niego wizyt.</h4>
+<div>
+    <dl>
+        <dd>
+            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        
+    </dl>
+
+    <form asp-action="Delete">
+        <input class="btn btn-danger" type="submit" value="Usuń" />
+        <a class="btn btn-primary" asp-action="Index">Anuluj</a>
+    </form>
+</div>
+
+

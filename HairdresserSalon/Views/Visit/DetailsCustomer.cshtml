@@ -1,0 +1,34 @@
+﻿@model VisitModel
+@{ 
+    ViewData["Title"] = "Szczegóły wizyty";
+    TempData["source"] = 1;
+}
+<h1>
+    Szczegóły wizyty
+</h1>
+<div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Date.Day.Date)</b></label>
+        @Html.DisplayFor(model => model.Date.Day.Date)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Date.Hour)</b></label>
+        @Html.DisplayFor(model => model.Date.Hour)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Hairdresser.Name)</b></label>
+        @Html.DisplayFor(model => model.Hairdresser.Name)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Service.Name)</b></label>
+        @Html.DisplayFor(model => model.Service.Name)
+    </div>
+    <div>
+        <label><b>@Html.DisplayNameFor(model => model.Service.Price)</b></label>
+        @Html.DisplayFor(model => model.Service.Price) zł
+    </div>
+    <div>
+        <input class="btn btn-danger" type="button" value="Odwołaj" onclick="location.href='@Url.Action("CancelVisit", "Visit", new { id = Model.Id })'" />
+    </div>
+    
+</div>

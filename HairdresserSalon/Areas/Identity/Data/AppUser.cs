@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace HairdresserSalon.Areas.Identity.Data
     {
         [PersonalData]
         [Column(TypeName = "nvarchar(100)")]
+        [Display(Name = "Imię")]
         public string FirstName { get; set; }
         [PersonalData]
         [Column(TypeName = "nvarchar(100)")]
@@ -19,5 +21,9 @@ namespace HairdresserSalon.Areas.Identity.Data
         [PersonalData]
         [Column(TypeName = "bit")]
         public bool Employee { get; set; }
+        [PersonalData]
+        [Column(TypeName = "bit")]
+        [Display(Name ="Uprawnienia administratora")]
+        public bool Admin { get; set; }
     }
 }

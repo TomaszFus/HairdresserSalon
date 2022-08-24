@@ -10,6 +10,7 @@ namespace HairdresserSalon.Models
     {
         public Guid Id { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [Display(Name ="Data")]
         public DateTime Date { get; set; }
         public HairdresserModel Hairdresser { get; set; }
         public ICollection<HourModel> Hours { get; set; }

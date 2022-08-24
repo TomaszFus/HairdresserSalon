@@ -11,23 +11,27 @@ namespace HairdresserSalon.Models
     {
         [Key]
         public Guid Id { get; set; }
-        [DisplayName("Imie")]
+        [DisplayName("Fryzjer")]
+        [Required(ErrorMessage ="Podaj imię pracownika")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Proszę używać wyłącznie liter")]
         public string Name { get; set; }
+        public bool IsDeleted { get; set; }
 
 
-        public HairdresserModel(Guid id, string name)
+        public HairdresserModel(Guid id, string name, bool isDeleted)
         {
             Id = id;
             Name = name;
+            IsDeleted = isDeleted;
         }
 
         public HairdresserModel()
         {
         }
 
-        public static HairdresserModel Create(Guid id, string name)
+        public static HairdresserModel Create(Guid id, string name, bool isDeleted)
         {
-            HairdresserModel hairdresser = new HairdresserModel(id, name);
+            HairdresserModel hairdresser = new HairdresserModel(id, name, isDeleted);
             return hairdresser;
         }
     }

@@ -1,6 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<h1>Tworzenie wizyty</h1>
+﻿@model HairdresserSalon.Models.VisitModel
+<h1>Umów wizytę</h1>
+<div class="row">
+    <div class="col-md-4">
+        <div>
+            <label><b>@Html.DisplayNameFor(model => model.Date.Day.Date)</b></label>
+            <label>@Html.DisplayFor(model => model.Date.Day.Date)</label>
+        </div>
+        <div>
+            <label><b>@Html.DisplayNameFor(model => model.Date.Hour)</b></label>
+            <label>@Html.DisplayFor(model => model.Date.Hour)</label>
+        </div>
+        <div>
+            <label><b>@Html.DisplayNameFor(model => model.Hairdresser.Name)</b></label>
+            <label>@Html.DisplayFor(model => model.Hairdresser.Name)</label>
+        </div>
+        <div>
+            @if (TempData["Error"] != null)
+            {
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="rounded pg-3 alert-danger">
+                            @TempData["Error"].ToString()
+                        </div>
+                    </div>
+                </div>
+            }
+            <form asp-action="Create">
+                @if (TempData.ContainsKey("emp"))
+                    if ((bool)TempData["emp"] == true)
+                    {
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Customer.FirstName"></label>
+                            <input class="form-control" asp-for="Customer.FirstName" />
+                            <div>
+                                @Html.ValidationMessageFor(model => model.Customer.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Customer.LastName"></label>
+                            <input class="form-control" asp-for="Customer.LastName" />
+                            <div>
+                                @Html.ValidationMessageFor(model => model.Customer.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" asp-for="Customer.PhoneNumber"></label>
+                            <input class="form-control" asp-for="Customer.PhoneNumber" />
+                            <div>
+                                @Html.ValidationMessageFor(model => model.Customer.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+                <div>
+                    <label><b>@Html.DisplayNameFor(model => model.Service.Name)</b></label>
+                    @Html.DropDownList("Services")
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Umów wizytę" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    
+    
+    
+    
+
+
+
+
+
+
+
+

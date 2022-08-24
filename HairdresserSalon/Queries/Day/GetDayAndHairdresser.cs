@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Convey.CQRS.Queries;
 using HairdresserSalon.Models;
 
-namespace HairdresserSalon.Queries.Visit
+namespace HairdresserSalon.Queries.Day
 {
-    public class GetAllAvailableDates : IQuery<IEnumerable<DayModel>>
+    public class GetDayAndHairdresser : IQuery<DayModel>
     {
+        public Guid Id { get; set; }
     }
 }

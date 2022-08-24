@@ -1,0 +1,66 @@
+﻿@model IEnumerable<VisitModel>
+@{
+    ViewData["Title"] = "Archiwum wizyt";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+<div>
+    <input class="btn btn-light" type="button" value="Wszystkie" onclick="location.href='@Url.Action("VisitsArchive", "Visit", new { id = 1 })'" />
+    <input class="btn btn-light" type="button" value="Zakończone" onclick="location.href='@Url.Action("VisitsArchive", "Visit", new { id = 2 })'" />
+    <input class="btn btn-light" type="button" value="Odwołane" onclick="location.href='@Url.Action("VisitsArchive", "Visit", new { id = 3 })'" />
+</div>
+
+@if (!Model.Any())
+{
+    <label>Brak umówionych wizyt</label>
+}
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date.Day)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date.Hour)
+                </th>
+                <th>
+                    Klient
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Hairdresser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.Day.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.Hour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.FirstName)
+                        @Html.DisplayFor(modelItem => item.Customer.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hairdresser.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+
+
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

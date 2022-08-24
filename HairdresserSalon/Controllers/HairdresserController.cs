@@ -9,9 +9,14 @@ using Convey.CQRS.Commands;
 using Convey.CQRS.Queries;
 using HairdresserSalon.Commands.Hairdresser;
 using HairdresserSalon.Queries.Hairdresser;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using HairdresserSalon.Queries.User;
+using HairdresserSalon.Areas.Identity.Data;
 
 namespace HairdresserSalon.Controllers
 {
+    [Authorize]
     public class HairdresserController : Controller
     {
         private readonly ICommandDispatcher _commandDispatcher;
@@ -26,14 +31,27 @@ namespace HairdresserSalon.Controllers
         //GET get all hairdressers
         public ActionResult Index()
         {
-            var list = _queryDispatcher.QueryAsync(new GetAllHairdressers()).Result;
-            return View(list);
+            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            AppUser appUser = _queryDispatcher.QueryAsync(new GetUserById { Id = userId }).Result;
+            if (appUser.Employee == true)
+            {
+                var list = _queryDispatcher.QueryAsync(new GetAllHairdressers()).Result;
+                return View(list);
+            }
+            return View("Areas/Identity/Pages/Account/AccessDenied.cshtml");
+            
         }
 
         //GET create Hairdresser
         public ActionResult Create()
         {
-            return View(new HairdresserModel());
+            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            AppUser appUser = _queryDispatcher.QueryAsync(new GetUserById { Id = userId }).Result;
+            if (appUser.Admin == true)
+            {
+                return View(new HairdresserModel());
+            }                
+            return View("Areas/Identity/Pages/Account/AccessDenied.cshtml");
         }
 
         //POST create Hairdresser
@@ -41,10 +59,44 @@ namespace HairdresserSalon.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(HairdresserModel hairdresser)
         {
-            _commandDispatcher.SendAsync(new CreateHairdresser(hairdresser.Name));
-            return RedirectToAction("Index");
-            //_hairdresserRepository.AddHairdresser(hairdresser);
+            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            AppUser appUser = _queryDispatcher.QueryAsync(new GetUserById { Id = userId }).Result;
+            if (appUser.Admin == true)
+            {
+                if (ModelState.IsValid)
+                {
+                    _commandDispatcher.SendAsync(new CreateHairdresser(hairdresser.Name));
+                    return RedirectToAction("Index");
+                }
+                return View("Create");
+                //_hairdresserRepository.AddHairdresser(hairdresser);
+            }
+            return View("Areas/Identity/Pages/Account/AccessDenied.cshtml");
+        }
 
+        public ActionResult Delete(Guid id)
+        {
+            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            AppUser appUser = _queryDispatcher.QueryAsync(new GetUserById { Id = userId }).Result;
+            if (appUser.Admin == true)
+            {
+                return View(_queryDispatcher.QueryAsync(new GetHairdresser { Id = id }).Result);
+            }
+            return View("Areas/Identity/Pages/Account/AccessDenied.cshtml");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Guid id, HairdresserModel hairdresser)
+        {
+            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            AppUser appUser = _queryDispatcher.QueryAsync(new GetUserById { Id = userId }).Result;
+            if (appUser.Admin == true)
+            {
+                _commandDispatcher.SendAsync(new DeleteHairdresser(id));
+                return RedirectToAction("Index");
+            }
+            return View("Areas/Identity/Pages/Account/AccessDenied.cshtml");
         }
     }
 }

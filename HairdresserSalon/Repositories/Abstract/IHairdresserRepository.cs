@@ -12,5 +12,6 @@ namespace HairdresserSalon.Repositories.Abstract
 
         Task<IEnumerable<HairdresserModel>> GetAllHairdressers();
         Task<HairdresserModel> GetHairdresser(Guid id);
+        Task DeleteHairdresser(Guid id);
     }
 }

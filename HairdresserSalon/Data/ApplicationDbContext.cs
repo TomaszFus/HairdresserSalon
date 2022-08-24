@@ -13,6 +13,6 @@ namespace HairdresserSalon.Data
             : base(options)
         {
         }
-        public DbSet<HairdresserSalon.Models.DayModel> DayModel { get; set; }
+        //public DbSet<HairdresserSalon.Models.DayModel> DayModel { get; set; }
     }
 }

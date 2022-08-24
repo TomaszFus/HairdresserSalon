@@ -36,6 +36,13 @@ namespace HairdresserSalon
             services.AddTransient<IServiceRepository, ServiceRepository>();
             services.AddTransient<IDayRepository, DayRepository>();
             services.AddTransient<IHourRepository, HourRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IVisitRepository, VisitRepository>();
+            services.AddTransient<IOpinionRepository, OpinionRepository>();
+            services.AddTransient<IEmailRepository, EmailRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IInformationRepository, InformationRepository>();
+            services.AddTransient<IOpeningHourRepository, OpeningHourRepository>();
             services.AddConvey()
                 .AddApplication();
 

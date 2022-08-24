@@ -1,38 +1,66 @@
-﻿@model IEnumerable<DayModel>
+﻿@model IEnumerable<VisitModel>
 @{
     ViewData["Title"] = "GetAll";
+    Layout = "~/Views/Shared/_LayoutEmploee.cshtml";
+}
+<form asp-action="Index">
+    <div>
+        <input class="btn btn-light" type="button" value="Dziś" onclick="location.href='@Url.Action("Index", "Visit", new { id = "t" })'" />
+        <input class="btn btn-light" type="button" value="Wszystkie" onclick="location.href='@Url.Action("Index", "Visit", new { id = ""})'" />
+        <input type="text" id="search" name="search" placeholder="Nazwisko klienta">
+        <input class="btn btn-light" type="submit" value="Szukaj" />
+    </div>
+</form>
 
+
+<h1>Umuwione wizyty</h1>
+@if (!Model.Any())
+{
+    <label>Brak umówionych wizyt</label>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date.Day)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date.Hour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Hairdresser)
+                </th>
+                <th>
+                    Klient
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.Day.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.Hour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Hairdresser.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.FirstName)
+                        @Html.DisplayFor(modelItem => item.Customer.LastName)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Szczegóły", "Details", new { id = item.Id })
+                    </td>
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
-<h1>Terminy</h1>
-<table>
-    <tr>
-        @foreach (var day in Model)
-        {
-
-        <th>
-            @Html.DisplayFor(modelItem => day.Date.DayOfWeek)
-            @Html.DisplayFor(modelItem => day.Date)
-            <div>
-                @Html.DisplayFor(modelItem => day.Hairdresser.Name)
-            </div>
-
-        </th>
-
-        <tr>
-
-            @foreach (var hour in day.Hours)
-            {
-            <td>
-                @*@Html.ActionLink(hour.Hour.ToString(),"Index", "TimeTable", new { id = hour.Id }, null)*@
-                <button class="btn" onclick="location.href='@Url.Action("Create","Visit", new {id = hour.Id})'">
-                    @Html.DisplayFor(modelItem => hour.Hour)
-                </button>
-            </td>
-
-            }
-
-        </tr>
-    }
-        </tr>
-    </table>

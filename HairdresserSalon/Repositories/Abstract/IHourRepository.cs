@@ -9,5 +9,9 @@ namespace HairdresserSalon.Repositories.Abstract
     public interface IHourRepository
     {
         Task AddHour(HourModel hour);
+        Task<HourModel> GetHour(Guid id);
+        Task Update(HourModel hour);
+        Task<IEnumerable<HourModel>> GetHoursForDay(Guid dayId);
+        Task Delete(Guid id);
     }
 }

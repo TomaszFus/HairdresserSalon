@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using HairdresserSalon.Models;
+using HairdresserSalon.Repositories.Abstract;
 
 namespace HairdresserSalon.Areas.Identity.Pages.Account
 {
@@ -24,17 +26,20 @@ namespace HairdresserSalon.Areas.Identity.Pages.Account
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ICustomerRepository _customerRepository;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICustomerRepository customerRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _customerRepository = customerRepository;
         }
 
         [BindProperty]
@@ -46,33 +51,38 @@ namespace HairdresserSalon.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="Podaj imię")]
             [DataType(DataType.Text)]
             [Display(Name = "Imię")]
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Podaj nazwisko")]
             [DataType(DataType.Text)]
             [Display(Name = "Nazwisko")]
             public string LastName { get; set; }
 
-            [Display(Name = "Pracownik")]
-            public bool Employee { get; set; }
+            [Required(ErrorMessage = "Podaj numer telefonu")]
+            [DataType(DataType.PhoneNumber)]
+            [StringLength(9, MinimumLength =9,ErrorMessage ="Numer telefonu musi się składać z 9 cyfr")]
+            [RegularExpression("^[0-9]*$", ErrorMessage = "Podaj wyłącznie cyfry")]
+            [Display(Name = "Telefon")]
+            public string PhoneNumber { get; set; }
 
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Podaj andres email")]
+            [EmailAddress(ErrorMessage ="Pole musi zawierać poprawny adres email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Podaj hasło")]
+            [StringLength(30, ErrorMessage = "{0} musi się składać conajmniej z {2} znaków", MinimumLength = 8)]
             [DataType(DataType.Password)]
             [Display(Name = "Hasło")]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "Potwierdź hasło")]
             [DataType(DataType.Password)]
             [Display(Name = "Potwierdź hasło")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Podane hasło i potwierdzenie hasła nie są takie same")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -88,10 +98,14 @@ namespace HairdresserSalon.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName=Input.LastName, Employee=Input.Employee };
+                var user = new AppUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName=Input.LastName, Employee=false, PhoneNumber = Input.PhoneNumber, Admin=false };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    CustomerModel customer = CustomerModel.Create(Guid.Parse(user.Id), user.FirstName, user.LastName, user.Email, user.PhoneNumber);
+                    await _customerRepository.AddCustomer(customer);
+
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

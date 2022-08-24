@@ -6,13 +6,22 @@
 }
 
 <h1>Dodaj fryzjera</h1>
-<form asp-action="Create">
-    <div>
-        <label asp-for="Name"></label>
-        <input asp-for="Name" />
+<div class="row">
+    <div class="col-md-3">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label class="form-label" asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" />
+                <div>
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Dodaj" />
+                <a class="btn btn-primary" asp-action="Index">Anuluj</a>
+            </div>
+        </form>
     </div>
-    <div>
-        <input type="submit" value="Dodaj" />
-    </div>
-</form>
+</div>
+
 

@@ -23,9 +23,16 @@ namespace HairdresserSalon.Repositories.Concrete
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteHairdresser(Guid id)
+        {
+            HairdresserModel result = _context.Hairdressers.SingleOrDefault(x => x.Id == id);
+            result.IsDeleted = true;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<HairdresserModel>> GetAllHairdressers()
         {
-            return await _context.Hairdressers.ToListAsync();
+            return await _context.Hairdressers.Where(x=>x.IsDeleted==false).ToListAsync();
         }
 
         public async Task<HairdresserModel> GetHairdresser(Guid id)
